@@ -10,6 +10,6 @@ namespace ShelfOfShame.Domain.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<Tag> Tags { get; set; }
+        public List<Tag>? Tags { get; set; }
     }
 }

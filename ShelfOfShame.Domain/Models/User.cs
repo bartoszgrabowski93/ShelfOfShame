@@ -12,8 +12,8 @@ namespace ShelfOfShame.Domain.Models
         public string Username { get; set; }        
         public string Email { get; set; }
         public string Password { get; set; }
-        public string Nickname { get; set; }
-        public List<Shelf> UserShelf { get; set; }
+        public string Nickname { get; set; } = String.Empty;
+        public List<Shelf> UserShelf { get; set; } = new List<Shelf>();
 
     }
 }

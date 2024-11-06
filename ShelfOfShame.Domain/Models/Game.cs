@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace ShelfOfShame.Domain.Models
 {
-    public class Shelf
+    public class Game : Item
     {
-        public int Id { get; set; }
-        public string Name { get; set; } = String.Empty;
-        public int CategoryId {  get; set; }
+
     }
 }
