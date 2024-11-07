@@ -15,4 +15,8 @@
     <ProjectReference Include="..\ShelfOfShame.Infrastructure\ShelfOfShame.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 </Project>

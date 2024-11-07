@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShelfOfShame.Domain.Interfaces
+namespace ShelfOfShame.Domain.Models
 {
-    internal interface IUserRepository
+    public class Tag
     {
+        public int Id { get; set; }
+        public string Name { get; set; } = String.Empty;
     }
 }
