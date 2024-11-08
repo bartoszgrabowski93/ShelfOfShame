@@ -13,6 +13,6 @@ namespace ShelfOfShame.Domain.Interfaces
         void DeleteUser(int userId);
         void UpdateUser(User userToUpdate);
         IQueryable<User> GetAllUsers();
-
+        
     }
 }

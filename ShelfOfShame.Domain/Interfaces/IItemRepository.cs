@@ -9,5 +9,8 @@ namespace ShelfOfShame.Domain.Interfaces
     public interface IItemRepository
     {
         int AddItem(IItem itemToAdd);
+        void DeleteItem(IItem itemToRemove);
+        void UpdateItem(IItem itemToUpdate);
+        IQueryable<IItem> GetAllItems();
     }
 }

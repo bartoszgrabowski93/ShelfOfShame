@@ -11,11 +11,11 @@ namespace ShelfOfShame.Domain.Models
         public int Id { get; set; }
         public string Name { get; set; } = String.Empty;
         public int YearReleased { get; set; }
-
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
-        public int UserRating { get; set; } = 0;
-        public int CriticsRating { get; set; } = 0;
         
+        public List<Review> Reviews { get; set; } = new List<Review>();
+        public decimal UserRatings { get; set; } = 0;
+
     }
 }
