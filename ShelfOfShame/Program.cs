@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 var service = builder.Services;
 var configuration = builder.Configuration;
@@ -6,6 +9,12 @@ var configuration = builder.Configuration;
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+service.AddDbContext<DbContext>(options =>
+    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+service.AddDefaultIdentity<IdentityUser>(options =>
+    options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<DbContext>();
 
 var app = builder.Build();
 
