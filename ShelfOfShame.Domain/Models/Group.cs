@@ -10,6 +10,6 @@ namespace ShelfOfShame.Domain.Models
     {
         public int Id { get; set; }
         public string GroupNickname { get; set; } = String.Empty;
-        public UserGroup UserGroups { get; set; }
+        public ICollection<UserGroup> UserGroups { get; set; }
     }
 }

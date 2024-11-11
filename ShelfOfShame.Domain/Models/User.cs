@@ -10,11 +10,13 @@ namespace ShelfOfShame.Domain.Models
     {
         public int Id { get; set; }
         public string Username { get; set; }        
-        public string Email { get; set; }
+        
         public string Password { get; set; }
+        public ContactInfo Contact { get; set; }
         public string Nickname { get; set; } = String.Empty;
-        public List<Shelf> UserShelfs { get; set; } = new List<Shelf>();
-        public UserGroup Groups { get; set; }
+        public ICollection<Shelf> UserShelfs { get; set; }
+        public ICollection<UserGroup> UserGroups { get; set; }
+        public ICollection<Review> Reviews { get; set; }
 
     }
 }
