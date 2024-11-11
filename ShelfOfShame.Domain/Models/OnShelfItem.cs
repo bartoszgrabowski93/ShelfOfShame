@@ -10,9 +10,9 @@ namespace ShelfOfShame.Domain.Models
     {
         public int Id { get; set; }        
         public int ShelfId { get; set; }
-        public Shelf Shelf { get; set; }        
+        public virtual Shelf Shelf { get; set; }        
         public int ItemId { get; set; }
-        public Item Item { get; set; }
+        public virtual Item Item { get; set; }
         public int ReviewRef { get; set; }
         public Review Review { get; set; }
     }

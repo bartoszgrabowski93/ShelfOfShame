@@ -13,6 +13,6 @@ namespace ShelfOfShame.Domain.Models
         public virtual MainCategory MainCategory { get; set; }
         public int UserId { get; set; }
         public virtual User User { get; set; }
-        public ICollection<OnShelfItem> ItemsOnShelf { get; set; }
+        public virtual ICollection<OnShelfItem> ItemsOnShelf { get; set; }
     }
 }

@@ -9,17 +9,22 @@ using System.Threading.Tasks;
 
 namespace ShelfOfShame.Infrastructure
 {
-    public class DbContext : IdentityDbContext
+    public class Context : IdentityDbContext
     {
-        public DbSet<MainCategory> MainCategories { get; set; }
+        
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<ContactInfo> ContactInfos { get; set; }
         public DbSet<Game> Games { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Item> Items { get; set; }
+        public DbSet<MainCategory> MainCategories { get; set; }
+        public DbSet<OnShelfItem> OnShelfItems { get; set; }        
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Shelf> Shelves { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbContext(DbContextOptions options) : base(options)
+        public DbSet<UserGroup> UserGroups { get; set; }
+        
+        public Context(DbContextOptions options) : base(options)
         {
             
         }
@@ -43,7 +48,8 @@ namespace ShelfOfShame.Infrastructure
                 .HasOne(u => u.User)
                 .WithOne(cu => cu.Contact)
                 .HasForeignKey<ContactInfo>(e => e.UserId);
-
+            
+            
         }
     }
 }
