@@ -11,7 +11,7 @@ namespace ShelfOfShame.Infrastructure
 {
     public class DbContext : IdentityDbContext
     {
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<MainCategory> MainCategories { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Game> Games { get; set; }
         public DbSet<Group> Groups { get; set; }
@@ -27,6 +27,23 @@ namespace ShelfOfShame.Infrastructure
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            // UserGroup relation many-to-many
+            builder.Entity<UserGroup>()
+                .HasKey(ug => new { ug.UserId, ug.GroupId });
+            builder.Entity<UserGroup>()
+                .HasOne<User>(ug => ug.UserRef)
+                .WithMany(u => u.UserGroups)
+                .HasForeignKey(ug => ug.UserId);
+            builder.Entity<UserGroup>()
+                .HasOne<Group>(ug => ug.GroupRef)
+                .WithMany(g => g.UserGroups)
+                .HasForeignKey(ug => ug.GroupId);
+            // ContactInfo with User relation one to one
+            builder.Entity<ContactInfo>()
+                .HasOne(u => u.User)
+                .WithOne(cu => cu.Contact)
+                .HasForeignKey<ContactInfo>(e => e.UserId);
+
         }
     }
 }
