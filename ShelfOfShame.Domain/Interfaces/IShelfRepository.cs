@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ShelfOfShame.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace ShelfOfShame.Domain.Interfaces
 {
     public interface IShelfRepository
     {
-        int AddShelf(Shelf shelf);
+        int AddShelf(Shelf shelf, User user);
     }
 }
