@@ -9,8 +9,7 @@ namespace ShelfOfShame.Domain.Models
     public class User
     {
         public int Id { get; set; }
-        public string Username { get; set; }        
-        
+        public string Username { get; set; }     
         public string Password { get; set; }
         public ContactInfo Contact { get; set; }
         public string Nickname { get; set; } = String.Empty;

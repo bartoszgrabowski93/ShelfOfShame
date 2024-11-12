@@ -13,7 +13,7 @@ namespace ShelfOfShame.Domain.Models
         public int YearReleased { get; set; }
         public int MainCategoryId { get; set; }
         public virtual MainCategory MainCategory { get; set; } 
-        public virtual ICollection<Shelf> Shelves { get; set; }
+        public ICollection<ItemShelves> ItemShelves { get; set; }
         public ICollection<Review> Reviews { get; set; }
         public decimal UserRatings { get; set; }
 

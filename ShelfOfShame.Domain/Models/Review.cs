@@ -10,8 +10,8 @@ namespace ShelfOfShame.Domain.Models
     public class Review
     {
         public int Id { get; set; }
-        public int OnShelfItemId { get; set; }
-        public OnShelfItem OnShelfItem { get; set; }
+        public int ItemId { get; set; }
+        public Item Item { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
         public decimal Rating { get; set; }

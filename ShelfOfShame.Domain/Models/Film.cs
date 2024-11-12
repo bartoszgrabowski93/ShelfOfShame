@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace ShelfOfShame.Domain.Models
 {
-    public class Game : Item
+    public class Film : Item
     {
-        public bool IsItStarted { get; set; }
-        public string SourcePlatform { get; set; }
+        public string StreamingPlatform { get; set; }
         public string Genre { get; set; }
     }
 }
