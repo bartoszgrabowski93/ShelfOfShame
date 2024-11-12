@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ShelfOfShame.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigration : Migration
+    public partial class FirstDatabaseInitialization : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -207,7 +207,16 @@ namespace ShelfOfShame.Infrastructure.Migrations
                     YearReleased = table.Column<int>(type: "int", nullable: false),
                     MainCategoryId = table.Column<int>(type: "int", nullable: false),
                     UserRatings = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false)
+                    Discriminator = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
+                    StreamingPlatform = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Film_Genre = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsItStarted = table.Column<bool>(type: "bit", nullable: true),
+                    SourcePlatform = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Genre = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TvSerie_StreamingPlatform = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HasUserStartedIt = table.Column<bool>(type: "bit", nullable: true),
+                    IsItCompleted = table.Column<bool>(type: "bit", nullable: true),
+                    NumberOfSeasons = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -221,7 +230,7 @@ namespace ShelfOfShame.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ContactInfo",
+                name: "ContactInfos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -233,9 +242,9 @@ namespace ShelfOfShame.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ContactInfo", x => x.Id);
+                    table.PrimaryKey("PK_ContactInfos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ContactInfo_Users_UserId",
+                        name: "FK_ContactInfos_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -248,7 +257,6 @@ namespace ShelfOfShame.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MainCategoryId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -270,7 +278,7 @@ namespace ShelfOfShame.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserGroup",
+                name: "UserGroups",
                 columns: table => new
                 {
                     UserId = table.Column<int>(type: "int", nullable: false),
@@ -278,15 +286,15 @@ namespace ShelfOfShame.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserGroup", x => new { x.UserId, x.GroupId });
+                    table.PrimaryKey("PK_UserGroups", x => new { x.UserId, x.GroupId });
                     table.ForeignKey(
-                        name: "FK_UserGroup_Groups_GroupId",
+                        name: "FK_UserGroups_Groups_GroupId",
                         column: x => x.GroupId,
                         principalTable: "Groups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserGroup_Users_UserId",
+                        name: "FK_UserGroups_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -322,43 +330,15 @@ namespace ShelfOfShame.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OnShelfItem",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ShelfId = table.Column<int>(type: "int", nullable: false),
-                    ItemId = table.Column<int>(type: "int", nullable: false),
-                    ReviewRef = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OnShelfItem", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OnShelfItem_Items_ItemId",
-                        column: x => x.ItemId,
-                        principalTable: "Items",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OnShelfItem_Shelves_ShelfId",
-                        column: x => x.ShelfId,
-                        principalTable: "Shelves",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Reviews",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    OnShelfItemId = table.Column<int>(type: "int", nullable: false),
+                    ItemId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     Rating = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ItemId = table.Column<int>(type: "int", nullable: true)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -367,11 +347,6 @@ namespace ShelfOfShame.Infrastructure.Migrations
                         name: "FK_Reviews_Items_ItemId",
                         column: x => x.ItemId,
                         principalTable: "Items",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Reviews_OnShelfItem_OnShelfItemId",
-                        column: x => x.OnShelfItemId,
-                        principalTable: "OnShelfItem",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -380,6 +355,30 @@ namespace ShelfOfShame.Infrastructure.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ItemShelves",
+                columns: table => new
+                {
+                    ItemId = table.Column<int>(type: "int", nullable: false),
+                    ShelfId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ItemShelves", x => new { x.ItemId, x.ShelfId });
+                    table.ForeignKey(
+                        name: "FK_ItemShelves_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_ItemShelves_Shelves_ShelfId",
+                        column: x => x.ShelfId,
+                        principalTable: "Shelves",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(
@@ -432,8 +431,8 @@ namespace ShelfOfShame.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ContactInfo_UserId",
-                table: "ContactInfo",
+                name: "IX_ContactInfos_UserId",
+                table: "ContactInfos",
                 column: "UserId",
                 unique: true);
 
@@ -443,25 +442,14 @@ namespace ShelfOfShame.Infrastructure.Migrations
                 column: "MainCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OnShelfItem_ItemId",
-                table: "OnShelfItem",
-                column: "ItemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OnShelfItem_ShelfId",
-                table: "OnShelfItem",
+                name: "IX_ItemShelves_ShelfId",
+                table: "ItemShelves",
                 column: "ShelfId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_ItemId",
                 table: "Reviews",
                 column: "ItemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reviews_OnShelfItemId",
-                table: "Reviews",
-                column: "OnShelfItemId",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_UserId",
@@ -479,8 +467,8 @@ namespace ShelfOfShame.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserGroup_GroupId",
-                table: "UserGroup",
+                name: "IX_UserGroups_GroupId",
+                table: "UserGroups",
                 column: "GroupId");
         }
 
@@ -506,13 +494,16 @@ namespace ShelfOfShame.Infrastructure.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "ContactInfo");
+                name: "ContactInfos");
+
+            migrationBuilder.DropTable(
+                name: "ItemShelves");
 
             migrationBuilder.DropTable(
                 name: "Reviews");
 
             migrationBuilder.DropTable(
-                name: "UserGroup");
+                name: "UserGroups");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -521,22 +512,19 @@ namespace ShelfOfShame.Infrastructure.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "OnShelfItem");
-
-            migrationBuilder.DropTable(
-                name: "Groups");
+                name: "Shelves");
 
             migrationBuilder.DropTable(
                 name: "Items");
 
             migrationBuilder.DropTable(
-                name: "Shelves");
-
-            migrationBuilder.DropTable(
-                name: "MainCategories");
+                name: "Groups");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "MainCategories");
         }
     }
 }

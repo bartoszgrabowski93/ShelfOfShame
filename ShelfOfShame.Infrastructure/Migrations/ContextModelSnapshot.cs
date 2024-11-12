@@ -280,7 +280,7 @@ namespace ShelfOfShame.Infrastructure.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("ContactInfo");
+                    b.ToTable("ContactInfos");
                 });
 
             modelBuilder.Entity("ShelfOfShame.Domain.Models.Group", b =>
@@ -310,8 +310,8 @@ namespace ShelfOfShame.Infrastructure.Migrations
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
                     b.Property<int>("MainCategoryId")
                         .HasColumnType("int");
@@ -337,6 +337,21 @@ namespace ShelfOfShame.Infrastructure.Migrations
                     b.UseTphMappingStrategy();
                 });
 
+            modelBuilder.Entity("ShelfOfShame.Domain.Models.ItemShelves", b =>
+                {
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShelfId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ItemId", "ShelfId");
+
+                    b.HasIndex("ShelfId");
+
+                    b.ToTable("ItemShelves");
+                });
+
             modelBuilder.Entity("ShelfOfShame.Domain.Models.MainCategory", b =>
                 {
                     b.Property<int>("Id")
@@ -354,32 +369,6 @@ namespace ShelfOfShame.Infrastructure.Migrations
                     b.ToTable("MainCategories");
                 });
 
-            modelBuilder.Entity("ShelfOfShame.Domain.Models.OnShelfItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ReviewRef")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ShelfId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
-
-                    b.HasIndex("ShelfId");
-
-                    b.ToTable("OnShelfItem");
-                });
-
             modelBuilder.Entity("ShelfOfShame.Domain.Models.Review", b =>
                 {
                     b.Property<int>("Id")
@@ -392,10 +381,7 @@ namespace ShelfOfShame.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OnShelfItemId")
+                    b.Property<int>("ItemId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Rating")
@@ -407,9 +393,6 @@ namespace ShelfOfShame.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ItemId");
-
-                    b.HasIndex("OnShelfItemId")
-                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -426,10 +409,6 @@ namespace ShelfOfShame.Infrastructure.Migrations
 
                     b.Property<int>("MainCategoryId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -480,14 +459,72 @@ namespace ShelfOfShame.Infrastructure.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("UserGroup");
+                    b.ToTable("UserGroups");
+                });
+
+            modelBuilder.Entity("ShelfOfShame.Domain.Models.Film", b =>
+                {
+                    b.HasBaseType("ShelfOfShame.Domain.Models.Item");
+
+                    b.Property<string>("Genre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StreamingPlatform")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("Items", t =>
+                        {
+                            t.Property("Genre")
+                                .HasColumnName("Film_Genre");
+                        });
+
+                    b.HasDiscriminator().HasValue("Film");
                 });
 
             modelBuilder.Entity("ShelfOfShame.Domain.Models.Game", b =>
                 {
                     b.HasBaseType("ShelfOfShame.Domain.Models.Item");
 
+                    b.Property<string>("Genre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsItStarted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SourcePlatform")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasDiscriminator().HasValue("Game");
+                });
+
+            modelBuilder.Entity("ShelfOfShame.Domain.Models.TvSerie", b =>
+                {
+                    b.HasBaseType("ShelfOfShame.Domain.Models.Item");
+
+                    b.Property<bool>("HasUserStartedIt")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsItCompleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("NumberOfSeasons")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StreamingPlatform")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("Items", t =>
+                        {
+                            t.Property("StreamingPlatform")
+                                .HasColumnName("TvSerie_StreamingPlatform");
+                        });
+
+                    b.HasDiscriminator().HasValue("TvSerie");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -582,16 +619,16 @@ namespace ShelfOfShame.Infrastructure.Migrations
                     b.Navigation("MainCategory");
                 });
 
-            modelBuilder.Entity("ShelfOfShame.Domain.Models.OnShelfItem", b =>
+            modelBuilder.Entity("ShelfOfShame.Domain.Models.ItemShelves", b =>
                 {
                     b.HasOne("ShelfOfShame.Domain.Models.Item", "Item")
-                        .WithMany()
+                        .WithMany("ItemShelves")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ShelfOfShame.Domain.Models.Shelf", "Shelf")
-                        .WithMany("Items")
+                        .WithMany("ItemShelves")
                         .HasForeignKey("ShelfId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -603,13 +640,9 @@ namespace ShelfOfShame.Infrastructure.Migrations
 
             modelBuilder.Entity("ShelfOfShame.Domain.Models.Review", b =>
                 {
-                    b.HasOne("ShelfOfShame.Domain.Models.Item", null)
+                    b.HasOne("ShelfOfShame.Domain.Models.Item", "Item")
                         .WithMany("Reviews")
-                        .HasForeignKey("ItemId");
-
-                    b.HasOne("ShelfOfShame.Domain.Models.OnShelfItem", "OnShelfItem")
-                        .WithOne("Review")
-                        .HasForeignKey("ShelfOfShame.Domain.Models.Review", "OnShelfItemId")
+                        .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -619,7 +652,7 @@ namespace ShelfOfShame.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("OnShelfItem");
+                    b.Navigation("Item");
 
                     b.Navigation("User");
                 });
@@ -669,18 +702,14 @@ namespace ShelfOfShame.Infrastructure.Migrations
 
             modelBuilder.Entity("ShelfOfShame.Domain.Models.Item", b =>
                 {
-                    b.Navigation("Reviews");
-                });
+                    b.Navigation("ItemShelves");
 
-            modelBuilder.Entity("ShelfOfShame.Domain.Models.OnShelfItem", b =>
-                {
-                    b.Navigation("Review")
-                        .IsRequired();
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("ShelfOfShame.Domain.Models.Shelf", b =>
                 {
-                    b.Navigation("Items");
+                    b.Navigation("ItemShelves");
                 });
 
             modelBuilder.Entity("ShelfOfShame.Domain.Models.User", b =>
