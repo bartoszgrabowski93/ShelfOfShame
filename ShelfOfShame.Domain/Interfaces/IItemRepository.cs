@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ShelfOfShame.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,9 @@ namespace ShelfOfShame.Domain.Interfaces
 {
     public interface IItemRepository
     {
-        int AddItem(IItem itemToAdd);
-        void DeleteItem(IItem itemToRemove);
-        void UpdateItem(IItem itemToUpdate);
-        IQueryable<IItem> GetAllItems();
+        int AddItem(Item itemToAdd);
+        void DeleteItem(int itemToRemove);
+        void UpdateItem(Item itemToUpdate);
+        IQueryable<Item> GetAllItems();
     }
 }
