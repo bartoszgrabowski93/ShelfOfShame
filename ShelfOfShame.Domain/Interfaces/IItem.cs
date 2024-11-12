@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace ShelfOfShame.Domain.Interfaces
 {
-    public interface IItem
+    internal interface IItem
     {
+
     }
 }

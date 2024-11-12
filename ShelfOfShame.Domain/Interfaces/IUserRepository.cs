@@ -1,14 +1,18 @@
-﻿using System;
+﻿using ShelfOfShame.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShelfOfShame.Domain.Models
+namespace ShelfOfShame.Domain.Interfaces
 {
-    public class Tag
+    public interface IUserRepositorycs
     {
-        public int Id { get; set; }
-        public string Name { get; set; } = String.Empty;
+        int AddUser(User userToAdd);
+        void DeleteUser(int userId);
+        void UpdateUser(User userToUpdate);
+        IQueryable<User> GetAllUsers();
+        
     }
 }
