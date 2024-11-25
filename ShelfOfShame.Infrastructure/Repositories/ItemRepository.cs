@@ -43,9 +43,19 @@ namespace ShelfOfShame.Infrastructure.Repositories
             return items;
         }
 
-        public void UpdateItem(Item itemToUpdate)
+        public Item GetItemById(int itemId)
         {
-            throw new NotImplementedException();
+            var item = _context.Items.FirstOrDefault(i => i.Id == itemId);
+            return item;
+        }        
+
+        public void UpdateItem(Item itemUpdatedInfo)
+        {
+            _context.Attach(itemUpdatedInfo);
+            _context.Entry(itemUpdatedInfo).Property("Name").IsModified = true;
+            _context.Entry(itemUpdatedInfo).Property("YearReleased").IsModified = true;
+            _context.Entry(itemUpdatedInfo).Property("MainCategoryId").IsModified = true;
+            _context.SaveChanges();
         }
     }
 }

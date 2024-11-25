@@ -11,7 +11,8 @@ namespace ShelfOfShame.Domain.Interfaces
     {
         int AddItem(Item itemToAdd);
         void DeleteItem(int itemToRemove);
-        void UpdateItem(Item itemToUpdate);
+        void UpdateItem(Item itemUpdatedInfo);
+        Item GetItemById(int itemId);
         IQueryable<Item> GetAllItems();
     }
 }
