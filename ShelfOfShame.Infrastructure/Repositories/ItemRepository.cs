@@ -26,15 +26,12 @@ namespace ShelfOfShame.Infrastructure.Repositories
         public void DeleteItem(int itemToRemove)
         {
             var itemToRemoveInDatabase = _context.Items.Find(itemToRemove);
-            if (itemToRemoveInDatabase != null)
+            if (itemToRemoveInDatabase == null)
             {
-                _context.Items.Remove(itemToRemoveInDatabase);
-                _context.SaveChanges();
+                throw new Exception("Item has not been found in database");
             }
-            else
-            {
-                Console.WriteLine("Item has not been found in Database");
-            }
+            _context.Items.Remove(itemToRemoveInDatabase);
+            _context.SaveChanges();
         }
 
         public IQueryable<Item> GetAllItems()
